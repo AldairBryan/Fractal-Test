@@ -2,8 +2,6 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import menuItems from "../pathMenu/MenuItemsPath";
 import "../styles/SideBarMenuStyles.css";
-import userIcon from "../assets/WhiteIcons/UserIcon.png";
-import logoutIcon from "../assets/WhiteIcons/LogoutIcon.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
@@ -55,28 +53,6 @@ function SideBarMenu({ children }) {
             onClick={toggle}
           />
         </div>
-        <div className="user">
-          <div
-            className="user-container"
-            style={{
-              border: isOpen ? "2px solid #fff" : "",
-              justifyContent: isOpen ? "" : "center",
-            }}
-          >
-            <div className="userIconContainer">
-              <img src={userIcon} alt="userIcon" />
-            </div>
-            <div
-              className="userData"
-              style={{
-                display: isOpen ? "block" : "none",
-              }}
-            >
-              <p className="text">{user.username}</p>
-              <p className="text">{user.role}</p>
-            </div>
-          </div>
-        </div>
         <div
           className="contenedor-mc"
           style={{
@@ -96,17 +72,6 @@ function SideBarMenu({ children }) {
               />
             </React.Fragment>
           ))}
-        </div>
-        <div
-          className="footerSideBar"
-          style={{ justifyContent: isOpen ? "end" : "center" }}
-        >
-          <div className="logout_container" onClick={handleLogout}>
-            <p className="text" style={{ display: isOpen ? "block" : "none" }}>
-              Log out
-            </p>
-            <img src={logoutIcon} alt="Logout" />
-          </div>
         </div>
       </div>
       <main>{children}</main>
