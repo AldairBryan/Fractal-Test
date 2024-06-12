@@ -1,24 +1,32 @@
 package com.fractal.backend.mapper;
 
 import com.fractal.backend.dto.OrderProductDto;
+import com.fractal.backend.entity.Order;
 import com.fractal.backend.entity.OrderProduct;
+import com.fractal.backend.entity.Product;
 
 public class OrderProductMapper {
     public static OrderProductDto mapToOrderProductDto(OrderProduct orderProduct) {
         return  new OrderProductDto(
                 orderProduct.getId(),
-                OrderMapper.mapToOrderDto(orderProduct.getOrder()),
-                ProductMapper.mapToProductDto(orderProduct.getProduct()),
+                orderProduct.getOrder().getId(),
+                orderProduct.getProduct().getId(),
                 orderProduct.getQuantity(),
                 orderProduct.getTotalPrice()
         );
     }
 
     public static OrderProduct mapToOrderProduct(OrderProductDto orderProductDto) {
-        return  new OrderProduct(
+        Order order = new Order();
+        order.setId(orderProductDto.getOrderId());
+
+        Product product = new Product();
+        product.setId(orderProductDto.getProductId());
+
+        return new OrderProduct(
                 orderProductDto.getId(),
-                OrderMapper.mapToOrder(orderProductDto.getOrder()),
-                ProductMapper.mapToProduct(orderProductDto.getProduct()),
+                order,
+                product,
                 orderProductDto.getQuantity(),
                 orderProductDto.getTotalPrice()
         );

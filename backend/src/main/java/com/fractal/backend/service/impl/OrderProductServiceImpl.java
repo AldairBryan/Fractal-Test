@@ -22,10 +22,10 @@ public class OrderProductServiceImpl implements OrderProductService {
     @Override
     public OrderProductDto createOrderProduct(OrderProductDto orderProductDto) {
         OrderProduct orderProduct = OrderProductMapper.mapToOrderProduct(orderProductDto);
-        orderProduct.setOrder(orderRepository.findById(orderProductDto.getOrder().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Order does not exist with id: " + orderProductDto.getOrder().getId())));
-        orderProduct.setProduct(productRepository.findById(orderProductDto.getProduct().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Product does not exist with id: " + orderProductDto.getProduct().getId())));
+        orderProduct.setOrder(orderRepository.findById(orderProductDto.getOrderId())
+                .orElseThrow(() -> new ResourceNotFoundException("Order does not exist with id: " + orderProductDto.getOrderId())));
+        orderProduct.setProduct(productRepository.findById(orderProductDto.getProductId())
+                .orElseThrow(() -> new ResourceNotFoundException("Product does not exist with id: " + orderProductDto.getProductId())));
         OrderProduct savedOrderProduct = orderProductRepository.save(orderProduct);
         return OrderProductMapper.mapToOrderProductDto(savedOrderProduct);
     }
@@ -43,10 +43,10 @@ public class OrderProductServiceImpl implements OrderProductService {
         OrderProduct orderProduct = orderProductRepository.findById(orderProductId)
                 .orElseThrow(() -> new ResourceNotFoundException("OrderProduct does not exist with id: " + orderProductId));
 
-        orderProduct.setOrder(orderRepository.findById(updatedOrderProductDto.getOrder().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Order does not exist with id: " + updatedOrderProductDto.getOrder().getId())));
-        orderProduct.setProduct(productRepository.findById(updatedOrderProductDto.getProduct().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Product does not exist with id: " + updatedOrderProductDto.getProduct().getId())));
+        orderProduct.setOrder(orderRepository.findById(updatedOrderProductDto.getOrderId())
+                .orElseThrow(() -> new ResourceNotFoundException("Order does not exist with id: " + updatedOrderProductDto.getOrderId())));
+        orderProduct.setProduct(productRepository.findById(updatedOrderProductDto.getProductId())
+                .orElseThrow(() -> new ResourceNotFoundException("Product does not exist with id: " + updatedOrderProductDto.getProductId())));
         orderProduct.setQuantity(updatedOrderProductDto.getQuantity());
         orderProduct.setTotalPrice(updatedOrderProductDto.getTotalPrice());
 

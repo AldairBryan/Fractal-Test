@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto updateOrder(Long orderId,OrderDto updatedOrder) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order is not exists with id: "+ orderId));
+                .orElseThrow(() -> new ResourceNotFoundException("Order does not exist with id: " + orderId));
         order.setOrderNumber(updatedOrder.getOrderNumber());
         order.setDate(updatedOrder.getDate());
         order.setNumberOfProducts(updatedOrder.getNumberOfProducts());

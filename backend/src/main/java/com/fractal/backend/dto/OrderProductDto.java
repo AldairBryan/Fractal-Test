@@ -11,8 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OrderProductDto {
     private Long id;
-    private OrderDto order;
-    private ProductDto product;
+    private Long orderId;
+    private Long productId;
     private int quantity;
     private double totalPrice;
 }
