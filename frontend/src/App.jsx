@@ -4,6 +4,7 @@ import SideBarMenu from "./components/SideBarMenu";
 import Header from "./components/Header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Products from './pages/Products/Products';
 
 function App() {
 
@@ -15,7 +16,7 @@ function App() {
             <SideBarMenu>
               <Header />
               <Routes>
-                {/*<Route path="/orders" element={ <Dashboard /> } />*/}
+                <Route path="/products" element={ <Products /> } />
               </Routes>
               <ToastContainer />
             </SideBarMenu>

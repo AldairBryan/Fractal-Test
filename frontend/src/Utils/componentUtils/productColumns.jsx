@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { SelectColumnFilter } from '../../components/Tabla/SelectColumnFilter';
+import { SelectColumnFilter } from '../../components/Table/SelectColumnFilter';
 
 
 export default function productColumns() {
