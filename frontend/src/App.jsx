@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Products from './pages/Products/Products';
 import Orders from './pages/Orders/Orders';
 import { FormAddEditProduct } from './pages/Products/FormAddEditProduct';
+import { FormAddEditOrder } from './pages/Orders/FormAddEditOrder';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
               <Routes>
                 <Route path="/" element={ <Orders /> } />
                 <Route path="/orders" element={ <Orders /> } />
+                <Route path="/orders/add-edit/:id?" element={ < FormAddEditOrder/> } />
                 <Route path="/products" element={ <Products /> } />
                 <Route path="/products/add-edit/:id?" element={ < FormAddEditProduct/> } />
               </Routes>
