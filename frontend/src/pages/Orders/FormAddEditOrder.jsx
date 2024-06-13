@@ -10,7 +10,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../../styles/ContenedorComp.css';
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 
-
 function FormAddEditOrder() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -56,7 +55,7 @@ function FormAddEditOrder() {
         setValue('date', new Date(res.data.date).toISOString().substring(0, 10));
         setValue('numberOfProducts', res.data.numberOfProducts);
         setValue('finalPrice', res.data.finalPrice);
-        setValue('status',res.data.status);
+        setValue('status', res.data.status);
       } catch (error) {
         toast.error('Error fetching order');
       }
@@ -84,13 +83,15 @@ function FormAddEditOrder() {
 
   const handleProductSave = () => {
     const existingProductIndex = orderProducts.findIndex(op => op.product.id === selectedProduct.id);
-  
+
+    const totalPrice = parseFloat((selectedProduct.unitPrice * selectedQuantity).toFixed(2));
+
     if (existingProductIndex !== -1) {
       const updatedOrderProducts = [...orderProducts];
       updatedOrderProducts[existingProductIndex] = {
         ...updatedOrderProducts[existingProductIndex],
         quantity: selectedQuantity,
-        totalPrice: selectedProduct.unitPrice * selectedQuantity,
+        totalPrice: totalPrice,
       };
       setOrderProducts(updatedOrderProducts);
     } else {
@@ -98,11 +99,11 @@ function FormAddEditOrder() {
         id: null,
         product: selectedProduct,
         quantity: selectedQuantity,
-        totalPrice: selectedProduct.unitPrice * selectedQuantity,
+        totalPrice: totalPrice,
       };
       setOrderProducts([...orderProducts, newOrderProduct]);
     }
-  
+
     setActiveProductModal(false);
     setSelectedProduct(null);
     setSelectedQuantity(1);
@@ -126,7 +127,7 @@ function FormAddEditOrder() {
         orderNumber: data.orderNumber,
         date: data.date,
         numberOfProducts: data.numberOfProducts,
-        finalPrice: data.finalPrice,
+        finalPrice: parseFloat(totalPrice.toFixed(2)),
         orderProducts: orderProducts.map(op => ({
           id: op.id,
           productId: op.product.id,
@@ -153,7 +154,7 @@ function FormAddEditOrder() {
   
   useEffect(() => {
     setValue('numberOfProducts', totalProducts);
-    setValue('finalPrice', totalPrice);
+    setValue('finalPrice', parseFloat(totalPrice.toFixed(2)));
   }, [orderProducts]);
 
   return (
@@ -208,11 +209,11 @@ function FormAddEditOrder() {
             </label>
           </div>
           <div className='btn-agregar' onClick={handleAddProduct}>
-          <BsFillPlusCircleFill
-            color='green'
-            className="icon-add"
-          />
-          <h3>Add Product</h3>
+            <BsFillPlusCircleFill
+              color='green'
+              className="icon-add"
+            />
+            <h3>Add Product</h3>
           </div>
           <div className="table-container">
             <table>
@@ -233,7 +234,7 @@ function FormAddEditOrder() {
                     <td>{orderProduct.product.name}</td>
                     <td>{orderProduct.product.unitPrice}</td>
                     <td>{orderProduct.quantity}</td>
-                    <td>{orderProduct.totalPrice}</td>
+                    <td>{orderProduct.totalPrice.toFixed(2)}</td>
                     <td>
                       <span className="actions">
                         <BsFillPencilFill
@@ -276,29 +277,29 @@ function FormAddEditOrder() {
         </form>
       </div>
       <Modal active={activeProductModal} toggle={() => setActiveProductModal(!activeProductModal)}>
-          <h3>Select Product</h3>
-          <select onChange={(e) => handleProductSelect(products.find(p => p.id === parseInt(e.target.value)))}>
-            <option value=''>Select a product</option>
-            {products.map(product => (
-              <option key={product.id} value={product.id}>
-                {product.name}
-              </option>
-            ))}
-          </select>
-          <label>
-            Quantity
-            <input
-              type='number'
-              value={selectedQuantity}
-              onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
-            />
-          </label>
-          <div className='contenedor-btn'>
-              <button className='btn-registrar' type='submit' onClick={handleProductSave}>Save</button>
-          </div>
+        <h3>Select Product</h3>
+        <select onChange={(e) => handleProductSelect(products.find(p => p.id === parseInt(e.target.value)))}>
+          <option value=''>Select a product</option>
+          {products.map(product => (
+            <option key={product.id} value={product.id}>
+              {product.name}
+            </option>
+          ))}
+        </select>
+        <label>
+          Quantity
+          <input
+            type='number'
+            value={selectedQuantity}
+            onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
+          />
+        </label>
+        <div className='contenedor-btn'>
+          <button className='btn-registrar' type='submit' onClick={handleProductSave}>Save</button>
+        </div>
       </Modal>
     </div>
   );
 }
 
-export { FormAddEditOrder};
+export { FormAddEditOrder };

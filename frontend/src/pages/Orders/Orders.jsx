@@ -24,6 +24,11 @@ function Orders() {
   }
   
   const handleEdit = (idOrder) => {
+    const order = orders.find(order => order.id === idOrder);
+    if (order.status === 'COMPLETED') {
+      toast.error('Cannot edit an order that is finished.');
+      return;
+    }
     navigate(`/orders/add-edit/${idOrder}`);
   }
   const handleDelete = (idOrder) => {
