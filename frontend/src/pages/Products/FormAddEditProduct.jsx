@@ -49,7 +49,7 @@ function FormAddEditProduct() {
         setValue('name',res.data.name);
         setValue('unitPrice',res.data.unitPrice);
       } catch (error) {
-        console.error('Error fetching product:', error);
+        toast.error('Error fetching product:', error);
       }
     }
   };

@@ -41,12 +41,11 @@ function FormAddEditOrder() {
         const res = await getOrder(id);
         setOrder(res.data);
         const allProducts = await getAllProducts();
-        // Mapear los productos del pedido con detalles completos
         const mappedOrderProducts = res.data.orderProducts.map(op => {
           const productDetails = allProducts.find(p => p.id === op.productId);
           return {
             ...op,
-            product: productDetails || { id: op.productId }, // Usar un objeto vacío o default si no se encuentra
+            product: productDetails || { id: op.productId },
           };
         });
         setOrderProducts(mappedOrderProducts);
@@ -126,7 +125,6 @@ function FormAddEditOrder() {
         })),
         status: data.status,
       };
-      console.log(orderData);
       if (isEditing) {
         await updateOrder(order.id, orderData);
         toast.success('Order successfully updated');
