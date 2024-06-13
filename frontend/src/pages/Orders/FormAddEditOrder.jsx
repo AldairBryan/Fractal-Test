@@ -40,18 +40,21 @@ function FormAddEditOrder() {
       try {
         const res = await getOrder(id);
         setOrder(res.data);
-        setOrderProducts(
-          res.data.orderProducts.map(op => ({
-            id: op.id,
-            product: op.product,
-            quantity: op.quantity,
-            totalPrice: op.totalPrice,
-          }))
-        );
+        const allProducts = await getAllProducts();
+        // Mapear los productos del pedido con detalles completos
+        const mappedOrderProducts = res.data.orderProducts.map(op => {
+          const productDetails = allProducts.find(p => p.id === op.productId);
+          return {
+            ...op,
+            product: productDetails || { id: op.productId }, // Usar un objeto vacío o default si no se encuentra
+          };
+        });
+        setOrderProducts(mappedOrderProducts);
         setValue('orderNumber', res.data.orderNumber);
         setValue('date', new Date(res.data.date).toISOString().substring(0, 10));
         setValue('numberOfProducts', res.data.numberOfProducts);
         setValue('finalPrice', res.data.finalPrice);
+        setValue('status',res.data.status);
       } catch (error) {
         toast.error('Error fetching order');
       }
