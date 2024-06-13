@@ -29,18 +29,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
         Order order = OrderMapper.mapToOrder(orderDto);
-        List<OrderProduct> orderProducts = order.getOrderProducts();
-        for (OrderProduct orderProduct : orderProducts) {
-            // Ensure product exists in the database
-            Optional<Product> productOpt = productRepository.findById(orderProduct.getProduct().getId());
-            if (productOpt.isPresent()) {
-                orderProduct.setProduct(productOpt.get());
-                orderProduct.setOrder(order); // Set the order reference
-            } else {
-                throw new RuntimeException("Product not found with id: " + orderProduct.getProduct().getId());
-            }
-        }
         Order savedOrder = orderRepository.save(order);
+        for (OrderProduct op : savedOrder.getOrderProducts()) {
+            op.setOrder(savedOrder);
+            orderProductRepository.save(op);
+        }
         return OrderMapper.mapToOrderDto(savedOrder);
     }
 

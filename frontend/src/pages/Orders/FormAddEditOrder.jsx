@@ -23,7 +23,6 @@ function FormAddEditOrder() {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm();
 
@@ -41,7 +40,14 @@ function FormAddEditOrder() {
       try {
         const res = await getOrder(id);
         setOrder(res.data);
-        setOrderProducts(res.data.orderProducts || []);
+        setOrderProducts(
+          res.data.orderProducts.map(op => ({
+            id: op.id,
+            product: op.product,
+            quantity: op.quantity,
+            totalPrice: op.totalPrice,
+          }))
+        );
         setValue('orderNumber', res.data.orderNumber);
         setValue('date', new Date(res.data.date).toISOString().substring(0, 10));
         setValue('numberOfProducts', res.data.orderProducts.length);
@@ -78,6 +84,7 @@ function FormAddEditOrder() {
       existingProduct.totalPrice += selectedProduct.unitPrice * selectedQuantity;
     } else {
       const newOrderProduct = {
+        id: null,
         product: selectedProduct,
         quantity: selectedQuantity,
         totalPrice: selectedProduct.unitPrice * selectedQuantity,
@@ -104,12 +111,16 @@ function FormAddEditOrder() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const orderData = {
-        ...data,
+        orderNumber: data.orderNumber,
+        date: data.date,
+        finalPrice: data.finalPrice,
         orderProducts: orderProducts.map(op => ({
-          product: op.product.id,
+          id: op.id,
+          productId: op.product.id,
           quantity: op.quantity,
           totalPrice: op.totalPrice,
         })),
+        status: data.status,
       };
       console.log(orderData);
       if (isEditing) {
@@ -223,23 +234,24 @@ function FormAddEditOrder() {
             </table>
           </div>
           <div>
-          <label>
-            Status
-            <select className='input-select'
-                name="Status"
-                {...register('status')}
-                >
-                <option value='' >Select Status</option>
-                <option value='PENDING' >Pending</option>
-                <option value='IN_PROGRESS' >In Progress</option>
-                <option value='COMPLETED' >Completed</option>
-            </select>
-            {errors.status && <p className='text-error'>*Status is required</p>}
-          </label>
+            <label>
+              Status
+              <select className='input-select' {...register('status', { required: true })}>
+                <option value=''>Select Status</option>
+                <option value='PENDING'>Pending</option>
+                <option value='IN_PROGRESS'>In Progress</option>
+                <option value='COMPLETED'>Completed</option>
+              </select>
+              {errors.status && <p className='text-error'>*Status is required</p>}
+            </label>
           </div>
           <div className='contenedor-btn'>
-            <button className='btn-cancelar' type='button' onClick={handleCancel}>Cancel</button>
-            <button className='btn-registrar' type='submit'>Save</button>
+            <button className='btn-cancelar' type='button' onClick={handleCancel}>
+              Cancel
+            </button>
+            <button className='btn-registrar' type='submit'>
+              Save
+            </button>
           </div>
         </form>
       </div>
@@ -247,7 +259,7 @@ function FormAddEditOrder() {
         <div>
           <h3>Select Product</h3>
           <select onChange={(e) => handleProductSelect(products.find(p => p.id === parseInt(e.target.value)))}>
-            <option value="">Select a product</option>
+            <option value=''>Select a product</option>
             {products.map(product => (
               <option key={product.id} value={product.id}>
                 {product.name}
@@ -257,12 +269,14 @@ function FormAddEditOrder() {
           <label>
             Quantity
             <input
-              type="number"
+              type='number'
               value={selectedQuantity}
               onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
             />
           </label>
-          <button type="button" onClick={handleProductSave}>Save</button>
+          <button type='button' onClick={handleProductSave}>
+            Save
+          </button>
         </div>
       </Modal>
     </div>
