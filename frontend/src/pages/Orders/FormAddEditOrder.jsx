@@ -111,6 +111,7 @@ function FormAddEditOrder() {
           totalPrice: op.totalPrice,
         })),
       };
+      console.log(orderData);
       if (isEditing) {
         await updateOrder(order.id, orderData);
         toast.success('Order successfully updated');
@@ -220,6 +221,21 @@ function FormAddEditOrder() {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div>
+          <label>
+            Status
+            <select className='input-select'
+                name="Status"
+                {...register('status')}
+                >
+                <option value='' >Select Status</option>
+                <option value='PENDING' >Pending</option>
+                <option value='IN_PROGRESS' >In Progress</option>
+                <option value='COMPLETED' >Completed</option>
+            </select>
+            {errors.status && <p className='text-error'>*Status is required</p>}
+          </label>
           </div>
           <div className='contenedor-btn'>
             <button className='btn-cancelar' type='button' onClick={handleCancel}>Cancel</button>

@@ -4,16 +4,19 @@ import com.fractal.backend.dto.OrderDto;
 import com.fractal.backend.dto.OrderProductDto;
 import com.fractal.backend.entity.Order;
 import com.fractal.backend.entity.OrderProduct;
+import com.fractal.backend.entity.Product;
 import com.fractal.backend.exception.ResourceNotFoundException;
 import com.fractal.backend.mapper.OrderMapper;
 import com.fractal.backend.mapper.OrderProductMapper;
 import com.fractal.backend.repository.OrderProductRepository;
 import com.fractal.backend.repository.OrderRepository;
+import com.fractal.backend.repository.ProductRepository;
 import com.fractal.backend.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,10 +24,22 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderProductRepository orderProductRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
         Order order = OrderMapper.mapToOrder(orderDto);
+        List<OrderProduct> orderProducts = order.getOrderProducts();
+        for (OrderProduct orderProduct : orderProducts) {
+            // Ensure product exists in the database
+            Optional<Product> productOpt = productRepository.findById(orderProduct.getProduct().getId());
+            if (productOpt.isPresent()) {
+                orderProduct.setProduct(productOpt.get());
+                orderProduct.setOrder(order); // Set the order reference
+            } else {
+                throw new RuntimeException("Product not found with id: " + orderProduct.getProduct().getId());
+            }
+        }
         Order savedOrder = orderRepository.save(order);
         return OrderMapper.mapToOrderDto(savedOrder);
     }
