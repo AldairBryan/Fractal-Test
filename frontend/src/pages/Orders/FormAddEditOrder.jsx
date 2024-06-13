@@ -50,7 +50,7 @@ function FormAddEditOrder() {
         );
         setValue('orderNumber', res.data.orderNumber);
         setValue('date', new Date(res.data.date).toISOString().substring(0, 10));
-        setValue('numberOfProducts', res.data.orderProducts.length);
+        setValue('numberOfProducts', res.data.numberOfProducts);
         setValue('finalPrice', res.data.finalPrice);
       } catch (error) {
         toast.error('Error fetching order');
@@ -113,6 +113,7 @@ function FormAddEditOrder() {
       const orderData = {
         orderNumber: data.orderNumber,
         date: data.date,
+        numberOfProducts: data.numberOfProducts,
         finalPrice: data.finalPrice,
         orderProducts: orderProducts.map(op => ({
           id: op.id,
