@@ -80,10 +80,16 @@ function FormAddEditOrder() {
   };
 
   const handleProductSave = () => {
-    const existingProduct = orderProducts.find(op => op.product.id === selectedProduct.id);
-    if (existingProduct) {
-      existingProduct.quantity += selectedQuantity;
-      existingProduct.totalPrice += selectedProduct.unitPrice * selectedQuantity;
+    const existingProductIndex = orderProducts.findIndex(op => op.product.id === selectedProduct.id);
+  
+    if (existingProductIndex !== -1) {
+      const updatedOrderProducts = [...orderProducts];
+      updatedOrderProducts[existingProductIndex] = {
+        ...updatedOrderProducts[existingProductIndex],
+        quantity: selectedQuantity,
+        totalPrice: selectedProduct.unitPrice * selectedQuantity,
+      };
+      setOrderProducts(updatedOrderProducts);
     } else {
       const newOrderProduct = {
         id: null,
@@ -93,6 +99,7 @@ function FormAddEditOrder() {
       };
       setOrderProducts([...orderProducts, newOrderProduct]);
     }
+  
     setActiveProductModal(false);
     setSelectedProduct(null);
     setSelectedQuantity(1);
