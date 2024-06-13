@@ -5,21 +5,29 @@ import productColumns from '../../Utils/componentUtils/productColumns';
 import  Modal  from '../../components/Modal';
 import { Table } from '../../components/Table/Table';
 import { FormDeleteProduct } from './FormDeleteProduct';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/ContenedorComp.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Products() {
 
+  const navigate = useNavigate();
+  
   const [products, setProducts] = useState([]);   
 
   const [activeFormDelete, setActiveFormDelete] = useState(false);
   
   const [selectedIdProduct, setSelectedIdProduct] = useState();
   
-  const handleAddEdit = (idProduct) => {
+  const handleAdd = () => {
+    navigate(`/products/add-edit`);
+  }
+  
+  const handleEdit = (idProduct) => {
     navigate(`/products/add-edit/${idProduct}`);
   }
+
   const handleDelete = (idProduct) => {
     setSelectedIdProduct(idProduct);
     setActiveFormDelete(!activeFormDelete);
@@ -43,7 +51,7 @@ function Products() {
     <div className='contenedor-componente'>
       <div className='contenedor-titulo'>
         <h2>Products</h2>
-        <div className='btn-agregar' onClick={handleAddEdit}>
+        <div className='btn-agregar' onClick={handleAdd}>
           <BsFillPlusCircleFill
             color='green'
             className="icon-add"
@@ -56,7 +64,7 @@ function Products() {
         columns={productColumns()}
         data={products}
         nombre={'products'}
-        onEdit={handleAddEdit}
+        onEdit={handleEdit}
         onDelete={handleDelete}
         clickableRows={false}
       />         
