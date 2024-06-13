@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { BsFillPlusCircleFill } from "react-icons/bs";
 import { getOrder, createOrder, updateOrder } from '../../api/Order.api';
 import { getAllProducts } from '../../api/Product.api';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,6 +8,8 @@ import { toast } from 'react-toastify';
 import Modal from '../../components/Modal';
 import 'react-toastify/dist/ReactToastify.css';
 import '../../styles/ContenedorComp.css';
+import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
+
 
 function FormAddEditOrder() {
   const navigate = useNavigate();
@@ -204,10 +207,12 @@ function FormAddEditOrder() {
               />
             </label>
           </div>
-          <div>
-            <button type="button" className="btn-agregar" onClick={handleAddProduct}>
-              Add Product
-            </button>
+          <div className='btn-agregar' onClick={handleAddProduct}>
+          <BsFillPlusCircleFill
+            color='green'
+            className="icon-add"
+          />
+          <h3>Add Product</h3>
           </div>
           <div className="table-container">
             <table>
@@ -230,12 +235,18 @@ function FormAddEditOrder() {
                     <td>{orderProduct.quantity}</td>
                     <td>{orderProduct.totalPrice}</td>
                     <td>
-                      <button type="button" onClick={() => handleProductEdit(index)}>
-                        Edit
-                      </button>
-                      <button type="button" onClick={() => handleProductRemove(index)}>
-                        Remove
-                      </button>
+                      <span className="actions">
+                        <BsFillPencilFill
+                          color='green'
+                          className="btn-edit"
+                          onClick={() => handleProductEdit(index)}
+                        />
+                        <BsFillTrashFill
+                          color='green'
+                          className="btn-delete"
+                          onClick={() => handleProductRemove(index)}
+                        />
+                      </span>
                     </td>
                   </tr>
                 ))}
@@ -265,7 +276,6 @@ function FormAddEditOrder() {
         </form>
       </div>
       <Modal active={activeProductModal} toggle={() => setActiveProductModal(!activeProductModal)}>
-        <div>
           <h3>Select Product</h3>
           <select onChange={(e) => handleProductSelect(products.find(p => p.id === parseInt(e.target.value)))}>
             <option value=''>Select a product</option>
@@ -283,10 +293,9 @@ function FormAddEditOrder() {
               onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
             />
           </label>
-          <button type='button' onClick={handleProductSave}>
-            Save
-          </button>
-        </div>
+          <div className='contenedor-btn'>
+              <button className='btn-registrar' type='submit' onClick={handleProductSave}>Save</button>
+          </div>
       </Modal>
     </div>
   );
