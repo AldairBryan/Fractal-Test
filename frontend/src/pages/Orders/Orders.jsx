@@ -4,7 +4,7 @@ import { getAllOrders } from '../../api/Order.api';
 import orderColumns from '../../Utils/componentUtils/orderColumns';
 import  Modal  from '../../components/Modal';
 import { Table } from '../../components/Table/Table';
-//import { FormDeleteProduct } from './FormDeleteProduct';
+import { FormDeleteOrder } from './FormDeleteOrder';
 import '../../styles/ContenedorComp.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -63,11 +63,9 @@ function Orders() {
     </div>
 
     <ToastContainer />
-
-    {/* Modal para eliminar  
     <Modal active={activeFormDelete} toggle={handleDelete}>
-      <FormDeleteProduct toggle={handleDelete} productId={selectedIdProduct} loadProducts={loadProducts} /> 
-    </Modal> */}
+      <FormDeleteOrder toggle={handleDelete} orderId={selectedIdOrder} loadOrders={loadOrders} /> 
+    </Modal>
     </>
   )
 }
