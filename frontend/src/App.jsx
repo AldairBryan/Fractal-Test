@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Products from './pages/Products/Products';
+import Orders from './pages/Orders/Orders';
 
 function App() {
 
@@ -16,6 +17,8 @@ function App() {
             <SideBarMenu>
               <Header />
               <Routes>
+                <Route path="/" element={ <Orders /> } />
+                <Route path="/orders" element={ <Orders /> } />
                 <Route path="/products" element={ <Products /> } />
               </Routes>
               <ToastContainer />
