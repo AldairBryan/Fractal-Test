@@ -4,7 +4,7 @@ import { getAllProducts } from '../../api/Product.api';
 import productColumns from '../../Utils/componentUtils/productColumns';
 import  Modal  from '../../components/Modal';
 import { Table } from '../../components/Table/Table';
-//import { FormDeleteProduct } from './FormDeleteProduct';
+import { FormDeleteProduct } from './FormDeleteProduct';
 import '../../styles/ContenedorComp.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -63,11 +63,9 @@ function Products() {
     </div>
 
     <ToastContainer />
-
-    {/* Modal para eliminar  
     <Modal active={activeFormDelete} toggle={handleDelete}>
       <FormDeleteProduct toggle={handleDelete} productId={selectedIdProduct} loadProducts={loadProducts} /> 
-    </Modal> */}
+    </Modal>
     </>
   )
 }

@@ -12,19 +12,19 @@ export const getAllOrders = async () => {
 }
 
 export const createOrder = (order) => {
-    return OrderApi.post('/create/', order);
+    return OrderApi.post('/create', order);
 }
 
 export const updateOrder = (id, order) => {
-    return OrderApi.put(`/update/${id}/`, order);
+    return OrderApi.put(`/update/${id}`, order);
 }
 
 export const deleteOrder = (id) => {
-    return OrderApi.delete(`/delete/${id}/`);
+    return OrderApi.delete(`/delete/${id}`);
 }
 
 export const getCountOrder = async () => {
-    const res = await OrderApi.get('/');
+    const res = await OrderApi.get('');
     const orders = res.data;
     const length = orders.length;
     return length;

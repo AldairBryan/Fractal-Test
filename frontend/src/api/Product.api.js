@@ -12,19 +12,19 @@ export const getAllProducts = async () => {
 }
 
 export const createProduct = (product) => {
-    return ProductApi.post('/create/', product);
+    return ProductApi.post('/create', product);
 }
 
 export const updateProduct = (id, product) => {
-    return ProductApi.put(`/update/${id}/`, product);
+    return ProductApi.put(`/update/${id}`, product);
 }
 
 export const deleteProduct = (id) => {
-    return ProductApi.delete(`/delete/${id}/`);
+    return ProductApi.delete(`/delete/${id}`);
 }
 
 export const getCountProduct = async () => {
-    const res = await ProductApi.get('/');
+    const res = await ProductApi.get('');
     const products = res.data;
     const length = products.length;
     return length;
