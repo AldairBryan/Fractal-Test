@@ -4,7 +4,7 @@ import { getProduct, createProduct, updateProduct } from '../../api/Product.api'
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-function FormAddEditProduct({toggle, loadProducts}) {
+function FormAddEditProduct({loadProducts}) {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditing = Boolean(id);
@@ -27,16 +27,19 @@ function FormAddEditProduct({toggle, loadProducts}) {
   const onSubmit = handleSubmit(async data => {
     try {
         if(isEditing){
-            await updateProduct(product.id, data)
+          await updateProduct(product.id, data);
+          loadProducts;
+          toast.success('Successfully created product');
+          navigate('/products');
         } else {
-            await createProduct(data);
+          data.orderProducts = [];
+          await createProduct(data);
+          loadProducts;
+          toast.success('Error while editing the product');
+          navigate('/products');
         }
-      toggle();
-      loadServicios();
-      toast.success('Servicio creado con éxito');
-      navigate('/products');
     } catch (error) {
-      toast.error(`Error al crear el servicio`);
+      toast.error(`Error while creating / editing the product`);
     }
   });
 
@@ -45,11 +48,10 @@ function FormAddEditProduct({toggle, loadProducts}) {
       try {
         const res = await getProduct(id);
         setProduct(res.data);
-        console.log(res.data);
         setValue('name',res.data.name);
-        setValue('unit_price',res.data.unit_price);
+        setValue('unitPrice',res.data.unitPrice);
       } catch (error) {
-        console.error('Error fetching order:', error);
+        console.error('Error fetching product:', error);
       }
     }
   };
@@ -60,7 +62,7 @@ function FormAddEditProduct({toggle, loadProducts}) {
 
   return (
     <>
-    <h2>{isEditing ? 'Edit Order' : 'Add Order'}</h2>
+    <h2>{isEditing ? 'Edit Product' : 'Add Product'}</h2>
     <form onSubmit={onSubmit}>
       <label>
         Name Of The Product
@@ -83,9 +85,9 @@ function FormAddEditProduct({toggle, loadProducts}) {
           step="0.01"
           min="0"
           placeholder='Unit Price'
-          {...register('unit_price', { required: true})}
+          {...register('unitPrice', { required: true})}
         />
-        {errors.unit_price?.type === 'required' && <p className='text-error'>*The name Unit Price is required</p>}
+        {errors.unitPrice?.type === 'required' && <p className='text-error'>*The name Unit Price is required</p>}
       </label>
       <div className='contenedor-btn'>
         <button className='btn-cancelar' type='button' onClick={() => handleCancel()}>Cancel</button>
